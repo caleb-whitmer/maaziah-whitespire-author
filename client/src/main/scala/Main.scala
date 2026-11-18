@@ -18,6 +18,8 @@ def render(container: dom.Element, rootNodes: Seq[HtmlElement]): Unit = {
 }
 
 @main def Main(args: String*): Unit = {
+  println(CssProperty("--test-color").getOrElse("none"))
+
   val appContainer = dom.document.querySelector("#app")
   val app = Seq(
     p("Hello World!")
