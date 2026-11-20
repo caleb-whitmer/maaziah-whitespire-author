@@ -5,7 +5,7 @@ val distDir       = "dist"        // Distributable directory
 val clientTarget  = "main.js"     // The target js file
 val serverTarget  = "server.jar"  // The target server 'fat' jar
 
-ThisBuild / scalaVersion := "3.10.0"
+ThisBuild / scalaVersion := "3.10.1"
 ThisBuild / version      := "0.1.0-SNAPSHOT"
 
 lazy val root = project
