@@ -19,16 +19,46 @@ def render[ T <: ReactiveElement.Base,
     }
 }
 
+/**
+ * @brief      Navigates the app to the given hash
+ *
+ * @param      hash  The hash to be navigated to
+ */
+def navButtonCallback(hash: String)() = {
+  // Update the hash of the current location
+  removeHash()
+  dom.window.location.hash = hash
+
+  // Scroll to the given hash
+  scrollToHash(hash)
+}
+
 @main 
 def Main(args: String*): Unit = {
   val appContainer = dom.document.querySelector("#app")
   val app = Seq(
-    Landing,
-    div(
-      p("Hello World!"),
-      display := "flow-root",
-      minHeight := "2000px",
-      backgroundColor := "white"
+    Sidebar(
+      Button("button-home",     "Home",     navButtonCallback("home")),
+      Button("button-about",    "About",    navButtonCallback("about")),
+      Button("button-works",    "Works",    navButtonCallback("works")),
+      Button("button-contact",  "Contact",  navButtonCallback("contact")),
+      Button("button-read",     "Read",     navButtonCallback("read")),
+    ),
+    Body(
+      div(idAttr := "home"),
+      Landing,
+      div(
+        p(
+          "Hello World!",
+          marginBottom := "800px",
+          idAttr := "about"
+        ),
+        p(
+          "Lorem Ipsum!",
+          idAttr := "read"
+        ),
+        idAttr := "body-content"
+      )
     )
   )
 
