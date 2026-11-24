@@ -3,6 +3,9 @@
 
 # sbt specific
 dist/*
+# Allow index and style
+!dist/index.html
+!dist/style.css
 target/
 lib_managed/
 src_managed/

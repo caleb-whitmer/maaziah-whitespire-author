@@ -1,0 +1,354 @@
+@keyframes appear { from { opacity: 0 } to { opacity: 1 } }
+@keyframes disappear { from { opacity: 1 } to { opacity: 0 } }
+
+:root {
+  /* Fonts */
+  --ff: "EB Garamond", sans-serif;
+  --ff-logo: "Italianno", sans-serif;
+
+  --f-logo: normal 4rem/1.5em var(--ff-logo);
+  --f-h1: normal 2rem/1.25em var(--ff);
+  --f-button: 500 75%/1.5em sans-serif;
+
+  /* Animations */
+  --aa: 0.25s ease-in-out forwards;
+
+  --a-logo-appear: appear var(--aa);
+  --a-logo-disappear: disappear var(--aa);
+
+  /* Colors */
+  --c-font:                 hsla(  0deg,  0%,  96%, 100%);
+  --c-background:           hsla(200deg, 16%,  20%, 100%);
+  --c-highlight:            hsla(200deg, 16%,  35%, 100%);
+  --c-border:               color-mix(in srgb, white 5%, var(--c-background));
+
+  /* Sidebar */
+  --sidebar-width: 3.5rem;
+  --sidebar-mobile-height: 8rem;
+  --sidebar-icon-size: 60%;
+  --sidebar-mobile-icon-size: 40%;
+  --sidebar-gap-size: 16px;
+
+  /* Landing */
+  --landing-height-rec: 60vh;
+  --landing-blur: 0.00125;
+  --landing-mountain-color: hsla(  6deg,  34%,  16%, 100%);
+  --landing-sky-color:      hsla(207deg,   8%,  28%, 100%);
+  --landing-sun-gradient:   hsla( 48deg, 100%,  99%, 100%) 0%,
+                            hsla( 48deg, 100%,  99%, 100%) 2%,
+                            hsla( 44deg,  97%,  73%, 100%) 4%,
+                            hsla( 36deg,  99%,  62%,  75%) 30%,
+                            hsla(  0deg,   0%, 100%,   0%) 100%;
+
+  /* Misc */
+  --document-min-width: 540px;
+
+  --scroll-to-relative: 25vh;
+
+  --border-outline: 1px solid var(--c-border);
+
+  --button-corner-radius: 8px;
+  --button-hover-color: var(--c-highlight);
+}
+
+* {
+  box-sizing: border-box;
+
+  scroll-margin-top: var(--scroll-to-relative);
+  scroll-behavior: smooth;
+}
+
+svg {
+  user-select: none;
+}
+
+body {
+  color: var(--c-font);
+  font: var(--f-h1);
+
+
+  padding: 0;
+  margin: 0;
+}
+
+::selection {
+  background: var(--c-highlight);
+}
+
+div#app {
+  position: relative;
+
+  /* Fill page with app screen */
+  min-width: var(--document-min-width);
+  max-width: 100%;
+  min-height: 100vh;
+  max-height: 100vh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  scroll-snap-type: x mandatory;
+
+  background: var(--c-background);
+}
+
+div.button {
+  user-select: none;
+  cursor: pointer;
+  border-radius: var(--button-corner-radius);
+
+  font-size: 1rem;
+
+  div.icon {
+    aspect-ratio: 1/1;
+    margin-top: 4px;
+
+    background-color: var(--c-font);
+
+    mask-size: contain;
+    mask-position: center;
+  }
+
+  div.text {
+    font: var(--f-button);
+    text-align: center;
+  }
+}
+
+div.button:hover {
+  background: var(--button-hover-color);
+}
+
+div#sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--sidebar-gap-size);
+
+  min-width: var(--sidebar-width);
+  max-width: var(--sidebar-width);
+
+  background: var(--c-background);
+  border-right: var(--border-outline);
+
+  overflow-y: auto;
+
+  div.button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    min-width: 100%;
+
+    div.icon {
+      min-width: var(--sidebar-icon-size);
+      max-width: var(--sidebar-icon-size);
+
+      margin-top: 6px;
+      mask-image: url("info.svg");
+    }
+  }
+
+
+  div#button-home {
+    div.icon {
+      mask-image: url("./assets/icon/home.svg");
+    }
+  }
+
+  div#button-about {
+    div.icon {
+      mask-image: url("./assets/icon/about.svg");
+    }
+  }
+
+  div#button-works {
+    div.icon {
+      mask-image: url("./assets/icon/works.svg");
+    }
+  }
+
+  div#button-contact {
+    div.icon {
+      mask-image: url("./assets/icon/contact.svg");
+    }
+  }
+
+  div#button-read {
+    div.icon {
+      mask-image: url("./assets/icon/read.svg");
+    }
+  }
+}
+
+/* Put spacers before and after the contents of the sidebar */
+div#sidebar::before, div#sidebar::after {
+  content: "";
+  display: block;
+  min-width: 100%;
+  aspect-ratio: 3/1;
+  background: transparent;
+}
+
+div#body {
+  flex-grow: 1;
+
+  display: flow-root;
+  /*min-height: 100vh;*/
+  max-height: 100vh;
+  /*min-height: 100dvh;*/
+  max-height: 100dvh;
+
+  perspective: 1px;
+  perspective-origin: 0 0;
+  overflow-y: auto;
+  overflow-x: clip;
+  word-wrap: break-word;
+
+  padding-top: min(100vw, var(--landing-height-rec));
+
+  background: transparent;
+}
+
+/* Overrides the scroll margin of #home such that it scrolls the page all the
+ * way to the top */
+div#home {
+  scroll-margin-top: 100vh;
+}
+
+div.landing {
+  all: unset;
+  position: absolute;
+  min-width: 100%;
+  top: 0;
+  left: 0;
+  /* By default landing elements are placed at the 0th layer */
+  transform: translateZ(-0px) scale(1);
+  transform-origin: 0 0;
+  z-index: -1;
+}
+
+/**
+ * Select the first landing div to set the background color of the landing. This
+ * prevents the other divs from inheriting the background color property which
+ * would remove their transparency.
+ */
+:nth-child(1 of div.landing) {
+  background: var(--landing-sky-color); 
+}
+
+div.landing svg {
+  display: block;
+
+  min-width: 100%;
+  aspect-ratio: 1/1;
+  max-height: var(--landing-height-rec);
+}
+
+
+/* Create the sun effect by centering a pseudo element with a strict 1/1 aspect
+ * ratio containing the desired gradient */
+div.landing.sun {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: clip;
+
+  max-height: var(--landing-height-rec);
+}
+div.landing.sun::after {
+  content: "";
+  display: block;
+  background-image: radial-gradient(circle at 32.5% 56.5%, var(--landing-sun-gradient));
+  
+  min-width: 100%;
+  aspect-ratio: 1/1;
+}
+
+div#logo {
+  user-select: none;
+  font: var(--f-logo);
+
+  margin: 1rem 1rem;
+  animation: var(--a-logo-appear);
+
+  p {
+    margin: unset;
+    word-wrap: break-word;
+  }
+}
+
+div#body-content {
+  display: flow-root;
+  min-height: 2000px;
+  background: var(--c-background);
+  border-top: var(--border-outline);
+
+  padding: 0 1rem;
+  text-align: justify;
+}
+
+/* Detect portrait (usually mobile) displays */
+@media screen and (orientation: portrait) {
+  /* Sidebar goes on bottom */
+  div#app {
+    flex-direction: column-reverse;
+  }
+l
+  /* Sidebar becomes row order flex */
+  div#sidebar {
+    overflow-y: clip;
+    overflow-x: auto;
+
+    border-top: var(--border-outline);
+    border-right: revert;
+
+    flex-direction: row;
+    justify-content: space-around;
+
+    min-width: revert;
+    max-width: revert;
+
+    min-height: var(--sidebar-mobile-height);
+    max-height: var(--sidebar-mobile-height);
+
+    /* Buttons grow to fit */
+    div.button {
+      font-size: 1.75rem;
+
+      min-width: revert;
+      min-height: var(--sidebar-mobile-height);
+      flex-grow: 1;
+      flex-basis: 0;
+
+      div.icon {
+        min-width: revert;
+        max-width: revert;
+
+        min-height: var(--sidebar-mobile-icon-size);
+        max-height: var(--sidebar-mobile-icon-size);
+      }
+    }
+  }
+
+  div#sidebar::before, div#sidebar::after {
+    min-width: revert;
+    min-height: revert;
+
+    max-width: 0;
+    max-height: 0;
+  }
+
+  div#body {
+    min-height: revert;
+    max-height: revert;
+
+    min-width: 100vw;
+    max-width: 100vw;
+  }
+}
