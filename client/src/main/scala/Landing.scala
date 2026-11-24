@@ -72,6 +72,7 @@ def Landing = {
     svg.svg(
       svg.viewBox := "0 0 1 1",
       svg.preserveAspectRatio := "xMidYMid slice",
+      // svg.preserveAspectRatio := "xMinYMin slice",
       svg.defs(
         svgRadialGradient("sun", CssProperty("--landing-sun-gradient"))
       ),
@@ -144,31 +145,26 @@ def Landing = {
   }
 
   /**
-   * @brief      Generate a sun in the form of an SVG which is wrapped in a
-   *             "landing" DIV
+   * @brief      Generate a sun in the form of a DIV
    *
-   * @param      layer     The layer number for the sun to be placed at for
-   *                       scrolling effects
-   * @param      opacity   The opacity of the sun and its light
-   * @param      position  The position of the sun
-   * @param      radius    The radius of the sun
+   * @param      layer    The layer number for the sun to be placed at for
+   *                      scrolling effects
+   * @param      opacity  The opacity of the sun and its light
+   *
+   * @return     A DIV placed at a specified layer and with the classes
+   *             "landing" and "sun"
    */
   def Sun(  layer: Int = 0,
-            opacity: Double = 1d,
-            position: (Double, Double) = (0.325d, 0.565d),
-            radius: Double = 2d,
-          ): HtmlElement = LandingSvgWrapper(
-    svg.circle(
-      svg.cx := s"${position._1}",
-      svg.cy := s"${position._2}",
-      svg.r := s"$radius",
-      svg.opacity := s"$opacity",
-      svg.fill := "url(#sun)"
+            opacity: Double = 1d 
+          ): HtmlElement = LandingWrapper(
+    div(
+      styleProp("opacity") := s"$opacity",
+      cls := Seq("landing", "sun")
     ),
     layer
   )
 
-  val sunLayer = 99999
+  val sunLayer = 25
 
   Seq(
     Sun(sunLayer, opacity = 1d),
