@@ -1,4 +1,5 @@
 import org.scalajs.*
+import scala.scalajs.js
 
 /**
  * @brief      Removes the hash from the url
@@ -16,5 +17,6 @@ def removeHash() = dom.window.history.replaceState(
  */
 def scrollToHash(hash: String) = dom.document.getElementById(hash) match {
   case null => ()
-  case e => e.scrollIntoView()
+  case e =>
+    e.scrollIntoView()
 }

@@ -11,6 +11,7 @@ import scala.language.implicitConversions
 import Hash.PseudoRandom
 import Noise.perlin1D
 import com.raquo.laminar.nodes.ReactiveElement
+import com.raquo.laminar.nodes.ReactiveHtmlElement
 
 /**
  * @brief      Generates the landing which is a dynamic sunset in the mountains
@@ -64,10 +65,10 @@ def Landing = {
    * @return     A DIV containing the SVG element with placed at the specified
    *             layer number and given the "landing" class identifier
    */
-  def LandingWrapper[ T <: dom.svg.Element
-                    ] ( elem: ReactiveSvgElement[T],
-                        layer: Int = 0
-                      ): HtmlElement = div(
+  def LandingSvgWrapper [ T <: dom.svg.Element
+                        ] ( elem: ReactiveSvgElement[T],
+                            layer: Int = 0
+                          ): HtmlElement = div(
     svg.svg(
       svg.viewBox := "0 0 1 1",
       svg.preserveAspectRatio := "xMidYMid slice",
@@ -76,6 +77,15 @@ def Landing = {
       ),
       elem,
     ),
+    cls := "landing",
+    transform := s"translateZ(-${layer}px) scale(${layer + 1})"
+  )
+
+  def LandingWrapper[ T <: dom.html.Element
+                    ] ( elem: ReactiveHtmlElement[T], 
+                        layer: Int = 0
+                      ): HtmlElement = div(
+    elem,
     cls := "landing",
     transform := s"translateZ(-${layer}px) scale(${layer + 1})"
   )
@@ -124,7 +134,7 @@ def Landing = {
       }
     }
 
-    LandingWrapper(
+    LandingSvgWrapper(
       svg.polygon(
         svg.points := GetPoints(pointCount) ++ "1,1 0,1",
         svg.fill := CssProperty("--landing-mountain-color").getOrElse("magenta")
@@ -147,7 +157,7 @@ def Landing = {
             opacity: Double = 1d,
             position: (Double, Double) = (0.325d, 0.565d),
             radius: Double = 2d,
-          ): HtmlElement = LandingWrapper(
+          ): HtmlElement = LandingSvgWrapper(
     svg.circle(
       svg.cx := s"${position._1}",
       svg.cy := s"${position._2}",
@@ -158,7 +168,7 @@ def Landing = {
     layer
   )
 
-  val sunLayer = 100
+  val sunLayer = 99999
 
   Seq(
     Sun(sunLayer, opacity = 1d),
@@ -181,5 +191,13 @@ def Landing = {
               Noise1(seed = -15), 
               Interpolate.lerpGen(0.5d, 1d, Interpolate.smoothstep)
             ),
+    LandingWrapper(
+      div(
+        p("Maaziah Whitespire"),
+        // p("MAAZIAH WHITESPIRE"),
+        idAttr := "logo"
+      ),
+      layer = sunLayer
+    )
   )
 }
